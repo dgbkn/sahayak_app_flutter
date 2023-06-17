@@ -16,7 +16,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-          flutter-version: '3.3.4'
+          flutter-version: '3.7.11'
       - run: flutter pub get
       - run: flutter build apk
       - run: flutter build windows     
