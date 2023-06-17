@@ -8,6 +8,7 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart';
 import 'package:mediaquery_sizer/mediaquery_sizer.dart';
 import 'package:sahayak/pages/Hospitals.dart';
+import 'package:sahayak/pages/LoginPage.dart';
 import 'package:sahayak/pages/SOS_Page.dart';
 import 'package:sahayak/utils.dart';
 
@@ -91,7 +92,13 @@ class _DashboardState extends State<Dashboard> {
                       },
                       icon: Icon(Theme.of(context).brightness == Brightness.dark
                           ? Icons.dark_mode
-                          : Icons.light_mode))
+                          : Icons.light_mode)),
+                  IconButton(
+                      onPressed: () {
+                       boxLogin.delete("token");
+                       changePageTo(context, LoginPage(),replace: true);
+                      },
+                      icon: Icon(Icons.logout))
                 ],
               ),
             ),
