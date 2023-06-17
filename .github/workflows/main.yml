@@ -1,0 +1,40 @@
+name: Flutter CI/CD
+
+on: workflow_dispatch
+#on:
+  #push:
+  #  branches:
+   #   - 'main'
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+          flutter-version: '3.3.4'
+      - run: flutter pub get
+      - run: flutter build apk
+      - run: flutter build windows     
+      - name: Archive Release
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          filename: Sahayak-${{github.ref_name}}-windows.zip
+          directory: build/windows/runner/Release
+      - name: Create a Release APK
+        uses: ncipollo/release-action@v1
+        with:
+         artifacts: "build/app/outputs/flutter-apk/*.apk,build/windows/runner/Release/Sahayak-${{github.ref_name}}-windows.zip"
+         token: ${{ secrets.TOKEN }}
+         tag: 1.0.${{github.run_number}}
+         
+
+ #     - uses: actions/upload-artifact@v1
+  #      with:
+    #      name: release-apk
+      #    path: build/app/outputs/apk/release/app-release.apk
