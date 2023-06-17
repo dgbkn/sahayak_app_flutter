@@ -84,21 +84,26 @@ class _DashboardState extends State<Dashboard> {
                           : CircularProgressIndicator(),
                     ],
                   ),
-                  IconButton(
-                      onPressed: () {
-                        EasyDynamicTheme.of(context).changeTheme(
-                            dark: Theme.of(context).brightness !=
-                                Brightness.dark);
-                      },
-                      icon: Icon(Theme.of(context).brightness == Brightness.dark
-                          ? Icons.dark_mode
-                          : Icons.light_mode)),
-                  IconButton(
-                      onPressed: () {
-                       boxLogin.delete("token");
-                       changePageTo(context, LoginPage(),replace: true);
-                      },
-                      icon: Icon(Icons.logout))
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            EasyDynamicTheme.of(context).changeTheme(
+                                dark: Theme.of(context).brightness !=
+                                    Brightness.dark);
+                          },
+                          icon: Icon(
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? Icons.dark_mode
+                                  : Icons.light_mode)),
+                      IconButton(
+                          onPressed: () {
+                            boxLogin.delete("token");
+                            changePageTo(context, LoginPage(), replace: true);
+                          },
+                          icon: Icon(Icons.logout))
+                    ],
+                  ),
                 ],
               ),
             ),

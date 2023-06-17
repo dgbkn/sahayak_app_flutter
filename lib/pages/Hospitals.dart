@@ -1,8 +1,9 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mediaquery_sizer/mediaquery_sizer.dart';
 import 'package:sahayak/utils.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Hospitals extends StatefulWidget {
   const Hospitals({super.key});
@@ -12,10 +13,10 @@ class Hospitals extends StatefulWidget {
 }
 
 class _HospitalsState extends State<Hospitals> {
-  late GoogleMapController mapController;
   bool display = false;
 
-  late LatLng _currentPosition;
+  double latitude = 0;
+  double longitude = 0;
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -49,6 +50,10 @@ class _HospitalsState extends State<Hospitals> {
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
+    if(permission == LocationPermission.whileInUse || permission == LocationPermission.always){
+      print("LOCATION REQUEST GRANTED;");
+    }
+
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition(
@@ -61,10 +66,11 @@ class _HospitalsState extends State<Hospitals> {
     double lat = position.latitude;
     double long = position.longitude;
 
-    LatLng location = LatLng(lat, long);
+    // LatLng location = LatLng(lat, long);
 
     setState(() {
-      _currentPosition = location;
+      latitude = lat;
+      longitude = long;
       display = true;
     });
   }
@@ -75,9 +81,9 @@ class _HospitalsState extends State<Hospitals> {
     super.initState();
   }
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
+  // void _onMapCreated(GoogleMapController controller) {
+  //   mapController = controller;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -88,21 +94,28 @@ class _HospitalsState extends State<Hospitals> {
         centerTitle: true,
       ),
       body: display
-          ? GoogleMap(
-              onMapCreated: _onMapCreated,
-              // circles: Set.from([
-              //   Circle(
-              //     circleId: CircleId("My Location"),
-              //     center: _currentPosition,
-              //     radius: 10,
-              //   )
-              // ]),
-              initialCameraPosition: CameraPosition(
-                target: _currentPosition,
-                zoom: 16.0,
-              )
-              
-              )
+          ?
+          // ? GoogleMap(
+          //     onMapCreated: _onMapCreated,
+          //     // circles: Set.from([
+          //     //   Circle(
+          //     //     circleId: CircleId("My Location"),
+          //     //     center: _currentPosition,
+          //     //     radius: 10,
+          //     //   )
+          //     // ]),
+          //     initialCameraPosition: CameraPosition(
+          //       target: _currentPosition,
+          //       zoom: 16.0,
+          //     )
+          Column(
+            children: [
+              SizedBox(
+                height: 2.h(context),
+              ),
+              Center(child: Text("Your Location is $latitude,$longitude"))
+            ],
+          )
           : SizedBox(),
     ));
   }
